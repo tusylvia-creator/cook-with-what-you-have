@@ -22,31 +22,12 @@
 
       <div id="chips" class="chips" aria-live="polite"></div>
 
-      <div class="filters">
-        <div class="filter">
-          <label class="label" for="timeSelect">Time</label>
-          <select id="timeSelect" class="select">
-            <option value="15">15 min</option>
-            <option value="30" selected>30 min</option>
-            <option value="60">60 min</option>
-          </select>
-        </div>
-
-        <div class="filter">
-          <label class="label" for="dietSelect">Diet</label>
-          <select id="dietSelect" class="select">
-            <option value="none" selected>None</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="vegan">Vegan</option>
-            <option value="gluten-free">Gluten-free</option>
-          </select>
-        </div>
-
-        <div class="filter toggle">
-          <input id="pantryBasics" type="checkbox" checked />
-          <label for="pantryBasics">Assume pantry basics (oil, salt, pepper, spices)</label>
-        </div>
-      </div>
+    <div class="filters">
+  <div class="filter toggle">
+    <input id="pantryBasics" type="checkbox" checked />
+    <label for="pantryBasics">Assume pantry basics (oil, salt, pepper, spices)</label>
+  </div>
+</div>
 
       <div class="row actions">
         <button id="generateBtn" class="btn primary" type="button">Generate ideas</button>
