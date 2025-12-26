@@ -1,23 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>What Can I Cook?</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ingredient → Recipe Ideas</title>
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
+  <main class="container">
+    <header class="header">
+      <h1>What can I cook?</h1>
+      <p>Type ingredients you have, then get recipe ideas.</p>
+    </header>
 
-  <h1>🍳 What Can I Cook?</h1>
+    <section class="card">
+      <label class="label" for="ingredientInput">Add an ingredient</label>
+      <div class="row">
+        <input id="ingredientInput" class="input" type="text" placeholder="e.g., chicken, rice, tomatoes" autocomplete="off" />
+        <button id="addBtn" class="btn" type="button">Add</button>
+      </div>
 
-  <p>Enter ingredients you have (comma separated):</p>
+      <div id="chips" class="chips" aria-live="polite"></div>
 
-  <input id="ingredientsInput" type="text" placeholder="eggs, rice, tomato">
-  <br><br>
-  <button onclick="findRecipes()">Find Recipes</button>
+      <div class="filters">
+        <div class="filter">
+          <label class="label" for="timeSelect">Time</label>
+          <select id="timeSelect" class="select">
+            <option value="15">15 min</option>
+            <option value="30" selected>30 min</option>
+            <option value="60">60 min</option>
+          </select>
+        </div>
 
-  <h2>Results:</h2>
-  <ul id="results"></ul>
+        <div class="filter">
+          <label class="label" for="dietSelect">Diet</label>
+          <select id="dietSelect" class="select">
+            <option value="none" selected>None</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="gluten-free">Gluten-free</option>
+          </select>
+        </div>
 
-  <script src="script.js"></script>
+        <div class="filter toggle">
+          <input id="pantryBasics" type="checkbox" checked />
+          <label for="pantryBasics">Assume pantry basics (oil, salt, pepper, spices)</label>
+        </div>
+      </div>
+
+      <div class="row actions">
+        <button id="generateBtn" class="btn primary" type="button">Generate ideas</button>
+        <button id="clearBtn" class="btn ghost" type="button">Clear</button>
+      </div>
+
+      <p id="hint" class="hint">Tip: press Enter to add an ingredient.</p>
+    </section>
+
+    <section class="card">
+      <div class="resultsHeader">
+        <h2>Recipe ideas</h2>
+        <span id="status" class="status"></span>
+      </div>
+      <div id="results" class="results"></div>
+    </section>
+
+    <footer class="footer">
+      <small>V1: static demo (free). Add AI later if you want.</small>
+    </footer>
+  </main>
+
+  <script src="./script.js"></script>
 </body>
 </html>
