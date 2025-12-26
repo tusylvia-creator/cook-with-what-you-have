@@ -1,11 +1,11 @@
 :root {
-  --bg: #0b0f19;
-  --card: #121a2a;
-  --text: #e8eefc;
-  --muted: #a8b3cf;
-  --border: rgba(255,255,255,0.12);
-  --primary: #7aa2ff;
-  --danger: #ff6b6b;
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --muted: #6b7280;
+  --border: rgba(0,0,0,0.12);
+  --primary: #2563eb;
+  --danger: #dc2626;
 }
 
 * { box-sizing: border-box; }
