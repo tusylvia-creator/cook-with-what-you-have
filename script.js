@@ -1,11 +1,7 @@
-console.log("script.js loaded");
-
 const els = {
   input: document.getElementById("ingredientInput"),
   addBtn: document.getElementById("addBtn"),
   chips: document.getElementById("chips"),
-  time: document.getElementById("timeSelect"),
-  diet: document.getElementById("dietSelect"),
   pantry: document.getElementById("pantryBasics"),
   generate: document.getElementById("generateBtn"),
   clear: document.getElementById("clearBtn"),
@@ -41,11 +37,13 @@ function renderChips() {
     const chip = document.createElement("span");
     chip.className = "chip";
     chip.innerHTML = `<span>${escapeHtml(i)}</span>`;
+
     const btn = document.createElement("button");
     btn.type = "button";
     btn.setAttribute("aria-label", `Remove ${i}`);
     btn.textContent = "×";
     btn.addEventListener("click", () => removeIngredient(i));
+
     chip.appendChild(btn);
     els.chips.appendChild(chip);
   });
@@ -63,9 +61,9 @@ function escapeHtml(str) {
 
 /**
  * FREE MVP: generate ideas locally (no API)
- * This is intentionally simple but produces consistent output.
+ * This generates consistent output without needing any API key.
  */
-function generateLocalRecipes({ ingredients, time, diet, pantryBasics }) {
+function generateLocalRecipes({ ingredients, pantryBasics }) {
   const base = ingredients.slice(0, 6); // keep it focused
   const has = (w) => ingredients.some(i => i.includes(w));
 
@@ -86,11 +84,15 @@ function generateLocalRecipes({ ingredients, time, diet, pantryBasics }) {
 
   // Idea 1: skillet / stir-fry
   ideas.push({
-    title: diet === "vegan" ? "Quick veggie stir-fry" : "Quick stir-fry",
-    time: `${time} min`,
-    tags: [diet !== "none" ? diet : null, "one-pan"].filter(Boolean),
+    title: "Quick stir-fry",
+    time: "25–35 min",
+    tags: ["one-pan"],
     uses: [protein, veggie, carb].filter(Boolean),
-    missing: [!veggie ? "a vegetable (e.g., onion/pepper/broccoli)" : null, !carb ? "a carb (rice/noodles)" : null].filter(Boolean),
+    missing: [
+      !veggie ? "a vegetable (e.g., onion/pepper/broccoli)" : null,
+      !carb ? "a carb (rice/noodles)" : null,
+      !protein ? "a protein (chicken/tofu/eggs/beans)" : null,
+    ].filter(Boolean),
     steps: [
       "Chop ingredients; heat oil in a pan.",
       `Cook ${protein ? protein : "your main ingredient"} until done.`,
@@ -101,11 +103,14 @@ function generateLocalRecipes({ ingredients, time, diet, pantryBasics }) {
 
   // Idea 2: soup / stew
   ideas.push({
-    title: diet === "vegan" ? "Cozy pantry soup" : "Cozy soup",
-    time: `${Math.min(60, Number(time) + 15)} min`,
-    tags: [diet !== "none" ? diet : null, "batch-friendly"].filter(Boolean),
+    title: "Cozy soup",
+    time: "35–55 min",
+    tags: ["batch-friendly"],
     uses: base,
-    missing: ["broth/stock (or water + seasoning)"],
+    missing: [
+      "broth/stock (or water + seasoning)",
+      ...(!pantryBasics ? pantry : []),
+    ].filter(Boolean),
     steps: [
       "Sauté onion/garlic (or any aromatics) in a pot.",
       "Add chopped ingredients and cover with broth/water.",
@@ -114,13 +119,16 @@ function generateLocalRecipes({ ingredients, time, diet, pantryBasics }) {
     ],
   });
 
-  // Idea 3: bowl/salad wrap
+  // Idea 3: loaded bowl
   ideas.push({
-    title: diet === "vegan" ? "Loaded grain bowl" : "Loaded bowl",
-    time: `${Math.max(15, Number(time) - 5)} min`,
-    tags: [diet !== "none" ? diet : null, "mix-and-match"].filter(Boolean),
+    title: "Loaded bowl",
+    time: "15–25 min",
+    tags: ["mix-and-match"],
     uses: [carb, protein, veggie].filter(Boolean),
-    missing: [!carb ? "a base (rice/quinoa/bread)" : null, "a sauce (yogurt, vinaigrette, salsa, tahini)"].filter(Boolean),
+    missing: [
+      !carb ? "a base (rice/quinoa/bread)" : null,
+      "a sauce (yogurt, vinaigrette, salsa, tahini)",
+    ].filter(Boolean),
     steps: [
       "Choose a base (grain, greens, or bread).",
       "Add cooked protein/beans and chopped veggies.",
@@ -128,49 +136,8 @@ function generateLocalRecipes({ ingredients, time, diet, pantryBasics }) {
       "Taste and adjust (salt/acid/heat).",
     ],
   });
-  
-  // Idea 3: Steamed chicken with mushrooms
-  const needsChicken = hasAny(["chicken","thigh","breast"]);
-  const needsMushroom = hasAny([,"shiitake","mushroom"]);
-  const: needsGinger = has("ginger");
-  
-  ideas.push({
-    title: "Steamed chicken with mushrooms,
-    time: "35 min",
-    tags: ["comforting", "simple", "healthy"],
-    uses: [
-    needsChicken ? "chicken" : null,
-    needsMuchsoom ? "shiitake/mushrooms" : null,
-    has("soy sauce") ? "soy sauce" : null,
-    has("garlic") ? "garlic" : null,
-    has("scallion") ? "scallion" : null,
-    has("rice") ? "rice" : null,
-  ].filter(Boolean),
-    missing: [
-    !needsChicken ? "chicken" : null,
-    !needsMushroom ? "shiitake (or any mushrooms)" : null,
-    !needsGinger ? "ginger (recommended)" : null,
-    pantryBasics ? null : "salt + oil",
-    !has("soy sauce") ? "soy sauce (or tamari)" : null,
-  ].filter(Boolean),
-
-   steps: [
-    "Slice chicken into bite-size pieces; season with a pinch of salt (and a little soy sauce if you have it).",
-    "Slice mushrooms and scatter over the chicken with ginger/garlic if using.",
-    "Steam on high until chicken is cooked through (about 12–18 min depending on thickness).",
-    "Finish with scallions and a splash of soy sauce; serve over rice or with veggies.",
-  ],
-  });
 
   return ideas;
-}
-
-/**
- * OPTIONAL: AI mode stub.
- * Later, you can connect this to an API route (recommended) so you don’t expose keys.
- */
-async function generateAiRecipes(/* params */) {
-  throw new Error("AI mode not connected yet.");
 }
 
 function renderResults(items) {
@@ -186,7 +153,7 @@ function renderResults(items) {
     div.innerHTML = `
       <h3>${escapeHtml(r.title)}</h3>
       <div class="meta">
-        <span class="badge">${escapeHtml(r.time)}</span>
+        <span class="badge">${escapeHtml(r.time || "")}</span>
         ${(r.tags || []).map(t => `<span class="badge">${escapeHtml(t)}</span>`).join("")}
       </div>
       <div class="meta">
@@ -211,8 +178,6 @@ async function onGenerate() {
 
   const params = {
     ingredients,
-    time: els.time.value,
-    diet: els.diet.value,
     pantryBasics: els.pantry.checked,
   };
 
@@ -220,13 +185,13 @@ async function onGenerate() {
     els.generate.disabled = true;
     els.status.textContent = "Generating…";
 
-    // Free MVP mode:
     const ideas = generateLocalRecipes(params);
 
     renderResults(ideas);
     els.status.textContent = `Showing ${ideas.length} ideas.`;
   } catch (e) {
-    els.status.textContent = e.message || "Something went wrong.";
+    els.status.textContent = e?.message || "Something went wrong.";
+    console.error(e);
   } finally {
     els.generate.disabled = false;
   }
