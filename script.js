@@ -1,3 +1,5 @@
+console.log("script.js loaded");
+
 const els = {
   input: document.getElementById("ingredientInput"),
   addBtn: document.getElementById("addBtn"),
