@@ -68,7 +68,7 @@ function generateLocalRecipes({ ingredients, pantryBasics }) {
   const has = (w) => ingredients.some(i => i.includes(w));
 
   // tiny heuristics
-  const proteins = ["chicken", "beef", "pork", "tofu", "eggs", "beans", "lentils", "chickpeas", "fish", "salmon", "tuna"];
+  const proteins = ["chicken", "beef", "pork", "tofu", "eggs", "beans", "lamb", "tilapia", "lentils", "chickpeas", "fish", "salmon", "tuna"];
   const carbs = ["rice", "pasta", "noodles", "bread", "tortilla", "potatoes", "quinoa"];
   const veg = ["onion", "garlic", "tomato", "spinach", "broccoli", "pepper", "mushroom", "carrot", "zucchini"];
 
@@ -78,7 +78,7 @@ function generateLocalRecipes({ ingredients, pantryBasics }) {
   const carb = pick(carbs);
   const veggie = pick(veg);
 
-  const pantry = pantryBasics ? ["oil", "salt", "pepper", "spices"] : [];
+  const pantry = pantryBasics ? ["oil", "salt", "pepper", "spices", "powder", "msg", "water"] : [];
 
   const ideas = [];
 
@@ -86,7 +86,7 @@ function generateLocalRecipes({ ingredients, pantryBasics }) {
   ideas.push({
     title: "Quick stir-fry",
     time: "25–35 min",
-    tags: ["one-pan"],
+    tags: ["one-pan"], ["hello this is a test"],
     uses: [protein, veggie, carb].filter(Boolean),
     missing: [
       !veggie ? "a vegetable (e.g., onion/pepper/broccoli)" : null,
