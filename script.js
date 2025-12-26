@@ -126,6 +126,39 @@ function generateLocalRecipes({ ingredients, time, diet, pantryBasics }) {
       "Taste and adjust (salt/acid/heat).",
     ],
   });
+  
+  // Idea 3: Steamed chicken with mushrooms
+  const needsChicken = hasAny(["chicken","thigh","breast"]);
+  const needsMushroom = hasAny([,"shiitake","mushroom"]);
+  const: needsGinger = has("ginger");
+  
+  ideas.push({
+    title: "Steamed chicken with mushrooms,
+    time: "35 min",
+    tags: ["comforting", "simple", "healthy"],
+    uses: [
+    needsChicken ? "chicken" : null,
+    needsMuchsoom ? "shiitake/mushrooms" : null,
+    has("soy sauce") ? "soy sauce" : null,
+    has("garlic") ? "garlic" : null,
+    has("scallion") ? "scallion" : null,
+    has("rice") ? "rice" : null,
+  ].filter(Boolean),
+    missing: [
+    !needsChicken ? "chicken" : null,
+    !needsMushroom ? "shiitake (or any mushrooms)" : null,
+    !needsGinger ? "ginger (recommended)" : null,
+    pantryBasics ? null : "salt + oil",
+    !has("soy sauce") ? "soy sauce (or tamari)" : null,
+  ].filter(Boolean),
+
+   steps: [
+    "Slice chicken into bite-size pieces; season with a pinch of salt (and a little soy sauce if you have it).",
+    "Slice mushrooms and scatter over the chicken with ginger/garlic if using.",
+    "Steam on high until chicken is cooked through (about 12–18 min depending on thickness).",
+    "Finish with scallions and a splash of soy sauce; serve over rice or with veggies.",
+  ],
+  });
 
   return ideas;
 }
