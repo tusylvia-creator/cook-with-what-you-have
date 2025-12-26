@@ -86,7 +86,7 @@ function generateLocalRecipes({ ingredients, pantryBasics }) {
   ideas.push({
     title: "Quick stir-fry",
     time: "25–35 min",
-    tags: ["one-pan"], ["hello this is a test"],
+    tags: ["one-pan", "hello this is a test"],
     uses: [protein, veggie, carb].filter(Boolean),
     missing: [
       !veggie ? "a vegetable (e.g., onion/pepper/broccoli)" : null,
